@@ -23,7 +23,10 @@ class ViewController: UIViewController {
         let currentLocation = CLLocationCoordinate2DMake(40.807552, -73.962724)
         let marker = GMSMarker(position: currentLocation)
         marker.title = "Skwl"
-        marker.map = mapView 
+        marker.map = mapView
+        if(true){ // if you click on a place
+            print("Ariana") // print out the coordinates 
+        }
     }
 
 
