@@ -1,0 +1,20 @@
+PODS:
+  - GoogleMaps (3.8.2):
+    - GoogleMaps/Maps (= 3.8.2)
+  - GoogleMaps/Base (3.8.2)
+  - GoogleMaps/Maps (3.8.2):
+    - GoogleMaps/Base
+
+DEPENDENCIES:
+  - GoogleMaps
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - GoogleMaps
+
+SPEC CHECKSUMS:
+  GoogleMaps: ae0efe10e9c40bcd9decd0c9fd53d947af7801a3
+
+PODFILE CHECKSUM: 41108399e1ff3b33242c9cee33d0bf76c110cf22
+
+COCOAPODS: 1.9.2
