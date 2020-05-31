@@ -18,7 +18,7 @@ if (!$conn) {
 }
 // echo  "<br>" ."Connected successfully";
 
-if($_GET['table']==""){
+if($_GET['table']=="1"){  // Prints Whole DB as Table
 
     $result = $conn->query("select * from person");
 
@@ -36,7 +36,6 @@ echo "</table>";
 }
 
 
-
 $data = json_decode( file_get_contents( 'php://input' ), true );
 
 $id = $data['id'];
@@ -44,15 +43,30 @@ $zipcode = $data['zipcode'];
 $insert_placeid = $data['placeid'];
 $get_placeid = $_GET['placeid'];
 
-
 // $zipcode = $_GET['zipcode'];
+// $result = $conn->query("insert into person(id, zipcode, time, placeid )
+//                       values ($id, $zipcode, CURRENT_TIMESTAMP, \"$insert_placeid[1]\")");
 
-$result = $conn->query("insert into person(id, zipcode, time, placeid )
-                      values ($id, $zipcode, CURRENT_TIMESTAMP, \"$insert_placeid\")");
 
 
-// $get_placeid = $_GET['placeid'];
-// $results = $conn->query("select * from person where id=\"$get_placeid\"");
+// foreach ($insert_placeid as $place) {
+//   $query .= " insert into person(userid, zipcode, time, placeid )
+//               values ($id, $zipcode, CURRENT_TIMESTAMP, \"$place\");";
+//   // $result->execute();            
+//   // error_log("$query");
+//   }
+//   error_log("$query");
+//   $conn->multi_query($query);
+
+foreach ($insert_placeid as $place) {
+$result = $conn->query("insert into person(userid, zipcode, time, placeid )
+                      values ($id, $zipcode, CURRENT_TIMESTAMP, \"$place\")");
+// $result->execute();            
+error_log("$place");
+}
+
+
+
 $result = $conn->query("select count(*) from person where placeid=\"$get_placeid\"");
 
 
@@ -62,9 +76,6 @@ $rows = array();
    }
 
  print json_encode($rows);
-
-
-
 
 
 // echo "<br>";
