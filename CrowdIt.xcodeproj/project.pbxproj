@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -89,7 +89,6 @@
 				5E40FD202EF17162282F75A3 /* Pods-CrowdIt.debug.xcconfig */,
 				3979E272930C10B1DA496535 /* Pods-CrowdIt.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
