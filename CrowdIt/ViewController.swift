@@ -32,7 +32,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.title = "CrowdIt"
         locationManager.requestAlwaysAuthorization()
         placesClient = GMSPlacesClient.shared()
         // Do any additional setup after loading the view.
@@ -67,6 +67,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
               print("Current Place name \(String(describing: place.name)) at likelihood \(likelihood.likelihood)")
               print("Current PlaceID \(String(describing: place.placeID))")
              print("Current Address \(String(describing: place.addressComponents))")
+                print("Current Place ** \(String(describing: likelihood))")
             }
           }
         })
@@ -77,12 +78,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
         placesAPITest()
 //        googlePlacesVersion()
-
+ 
     
     }
     @IBAction func getButton(_ sender: Any) {
-        
-        
+        print("yessir")
+        sendGetReq(place_id: "ChIJHWeDu_FlwokRRvHnCSXZL_w") { (jsonRes, error) in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "There are \(jsonRes) people here", message: "", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     
@@ -95,6 +102,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(lon)&radius=35&key=\(API_Key)") else { return }
+        print("Maps URL:   \(url)")
 //        print("Current loc: \(locationManager.location)")
 //        guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.620865,-73.725636&radius=35&key=\(API_Key)") else { return }
                 var request = URLRequest(url: url)
@@ -113,13 +121,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         do {
                             let json = try JSONSerialization.jsonObject(with: data, options:[]) as! NSDictionary
                             let results = json["results"] as! [NSDictionary]
+                            var place_ids : [String] = []
                             for place in results {
                                 print(place["name"] ?? "")
-                                print(" here   ***       \(place["place_id"])")
-                                let place_id  =  place["place_id"] ?? "" as! String
-                                self.sendPost(place_id: place_id)
+                                let place_id  =  String(describing: place["place_id"] ?? "" )
+                                place_ids.append(place_id)
                             }
-//                            print("Success data")
+                            self.sendPost(place_id: place_ids)
+                            print("Place IDs  \(place_ids)")
+                            print("Success data")
                         } catch {
                             print(error)
                         }
@@ -130,12 +140,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     
     func sendPost(place_id : Any){
-        let paramaters = ["id":"12", "zipcode":"11559",  "placeid":place_id]
+        let paramaters = ["userid":"12", "zipcode":"11559",  "placeid":place_id]
                 guard let url = URL(string: "http://24.44.193.13:60/posts") else { return }
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
                 guard let httpBody = try? JSONSerialization.data(withJSONObject: paramaters, options: []) else { return }
                 request.httpBody = httpBody
+                print("Post URL:   \(url)")
                 let session = URLSession.shared
                 session.dataTask(with: request) { (data, response, error) in
                     if let response = response{
@@ -144,15 +155,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             print("statusCode: \(httpResponse.statusCode)")
                         }
                     }
-                    if let data = data {
-                        do {
-                            
-                        } catch {
-                            print(error)
-                        }
-                    }
+//                    if let data = data {
+//                        do {
+//                            let json = try JSONSerialization.jsonObject(with: data , options: [])
+//                            print(json)
+//                        } catch {
+//                            print(error)
+//                        }
+//                    }
                 }.resume()    }
 
 
+    func sendGetReq(place_id : String, completionHandler:@escaping(String, Error?)->Void){
+//        var tally : Any = 0
+        guard let url = URL(string: "http://24.44.193.13:60/?placeid=\(place_id)") else { return }
+        print("Get URL:   \(url)")
+        let session = URLSession.shared
+        session.dataTask(with: url) { (data, response, error) in
+            if let response = response{
+                // gets status code
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("statusCode: \(httpResponse.statusCode)")
+                }
+            }
+            if let data = data {
+
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data , options: [])
+                    
+//                    print(type(of: json))
+//                    print(json)
+//                    var tally: Any = 0
+                    if let res = json as? [[String:Any]]{
+                    let tally = (res[0]["count(*)"] as? String) ?? ""
+                    completionHandler(tally, nil)
+                    print("\(tally) people")
+//                        self.setTally(tally: self.tally)
+
+
+                    }
+                    
+                } catch {
+                    completionHandler("", error)
+                    print(error)
+                }
+            }
+        }.resume()
+
+
+        
+    }
+    func setTally(tally :String){
+        let tally = tally
+        let alert = UIAlertController(title: "There are \(tally) people here", message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+//        self.navigationItem.title = "Bye"
+    }
+    
 }
 
