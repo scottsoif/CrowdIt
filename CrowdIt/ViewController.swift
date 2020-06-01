@@ -123,7 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             let results = json["results"] as! [NSDictionary]
                             var place_ids : [String] = []
                             for place in results {
-                                print(place["name"] ?? "")
+                                print(place["name"] ?? "", place["place_id"] ?? "")
                                 let place_id  =  String(describing: place["place_id"] ?? "" )
                                 place_ids.append(place_id)
                             }
@@ -140,7 +140,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     
     func sendPost(place_id : Any){
-        let paramaters = ["userid":"12", "zipcode":"11559",  "placeid":place_id]
+        let paramaters = ["userid":"13", "zipcode":"11559",  "placeid":place_id]
                 guard let url = URL(string: "http://24.44.193.13:60/posts") else { return }
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
@@ -155,14 +155,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             print("statusCode: \(httpResponse.statusCode)")
                         }
                     }
-//                    if let data = data {
-//                        do {
-//                            let json = try JSONSerialization.jsonObject(with: data , options: [])
-//                            print(json)
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
                 }.resume()    }
 
 

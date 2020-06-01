@@ -9,6 +9,8 @@ $username = $_ENV["username_CI"];
 $password = $_ENV["dbPassword_CI"];;
 $dbname = "crowdIt";
 
+$data = json_decode( file_get_contents( 'php://input' ), true );
+
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -34,13 +36,15 @@ while ($row = mysqli_fetch_assoc($result)) { // Important line !!! Check summary
 echo "</table>";
 
 }
-else if($_GET['userid']!=""){ // insert current location of
+else if($data['userid']!=""){ // insert current location of
 
 $data = json_decode( file_get_contents( 'php://input' ), true );
 
 $userid = $data['userid'];
 $zipcode = $data['zipcode'];
 $insert_placeid = $data['placeid'];
+
+error_log("$data");
 
 foreach ($insert_placeid as $place) {
 $result = $conn->query("insert into person(userid, zipcode, time, placeid )
