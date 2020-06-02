@@ -66,7 +66,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
 
                 // Specify a filter.
                 let filter = GMSAutocompleteFilter()
-                filter.type = .address
+//                filter.type = .address
+                filter.type = .establishment
                 autocompleteController.autocompleteFilter = filter
 
                 // Display the autocomplete view controller.
@@ -122,13 +123,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     @IBAction func getButton(_ sender: Any) {
         print("yessir")
         autocomplete()
-        sendGetReq(place_id: "ChIJHWeDu_FlwokRRvHnCSXZL_w") { (jsonRes, error) in
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: "There are \(jsonRes) people here", message: "", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
+  
     }
     
     
@@ -256,6 +251,13 @@ extension ViewController: GMSAutocompleteViewControllerDelegate {
     print("Place ID: \(place.placeID)")
     print("Place attributions: \(place.attributions)")
     dismiss(animated: true, completion: nil)
+    sendGetReq(place_id: String(describing: place.placeID ?? "" )) { (jsonRes, error) in
+          DispatchQueue.main.async {
+              let alert = UIAlertController(title: "\(jsonRes) people here", message: "There are currently \(jsonRes) people in \(String(describing: place.name ?? "" ))", preferredStyle: UIAlertController.Style.alert)
+              alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+              self.present(alert, animated: true, completion: nil)
+          }
+      }
   }
 
   func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
