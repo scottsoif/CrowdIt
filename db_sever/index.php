@@ -38,7 +38,7 @@ if ($_GET['table'] == "1")
   echo "</table>";
   
 
-  $result = $conn->query("select * from person");
+  $result = $conn->query("select * from person order by time desc");
     echo "<br>";
     echo "<table border='1'>";
     while ($row = mysqli_fetch_assoc($result))
