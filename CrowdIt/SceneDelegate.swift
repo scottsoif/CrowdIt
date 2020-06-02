@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  CrowdIt
 //
-//  Created by Scott Soifer on 5/25/20.
+//  Created by Ariana Gewurz and Scott Soifer on 5/25/20.
 //  Copyright © 2020 AGS2. All rights reserved.
 //
 

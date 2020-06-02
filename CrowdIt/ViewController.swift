@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  CrowdIt
 //
-//  Created by Scott Soifer on 5/25/20.
+//  Created by Ariana Gewurz and Scott Soifer on 5/25/20.
 //  Copyright © 2020 AGS2. All rights reserved.
 //
 
@@ -12,15 +12,8 @@ import GoogleMaps
 import GooglePlaces
 import CoreLocation
 
-struct place: Codable {
-    let place_id: String
-    let name: String
-}
-struct resultPlaces: Codable {
-    let results: String
-}
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {  // TODO (GMSMapViewDelegate needed?
 
     var placesClient: GMSPlacesClient!
     let locationManager = CLLocationManager()
@@ -30,26 +23,71 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
     
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace){
+        
+    }
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {}
+    
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "CrowdIt"
         locationManager.requestAlwaysAuthorization()
         placesClient = GMSPlacesClient.shared()
-        // Do any additional setup after loading the view.
+        
         GMSServices.provideAPIKey("AIzaSyDBEGvuILbEIx4MLupTueP8gcfXFYm0EIo")
 //
-        let camera = GMSCameraPosition.camera(withLatitude: 40.807552, longitude: -73.962724, zoom: 10)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero,camera: camera)
-        view = mapView
+          let camera = GMSCameraPosition.camera(withLatitude: 40.807552, longitude: -73.962724, zoom: 10)
+          let mapView = GMSMapView.map(withFrame: CGRect.zero,camera: camera)
+          view = mapView
+          let currentLocation = CLLocationCoordinate2DMake(40.807552, -73.962724)
+          if(true){ // if you click on a place
+          let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+            mapView.delegate = self as? GMSMapViewDelegate
+          self.view = mapView
 
-        let currentLocation = CLLocationCoordinate2DMake(40.807552, -73.962724)
-        let marker = GMSMarker(position: currentLocation)
-        marker.title = "Skwl"
-        marker.map = mapView
-//        if(true){ // if you click on a place
-//            print("Ariana") // print out the coordinates
-//        }
-    }
+          let marker = GMSMarker(position: currentLocation)
+          marker.title = "Skwl"
+          marker.map = mapView
+          }
+//          makeButton()
+        }
+    
+//              @objc func autocompleteClicked(_ sender: UIButton) {
+            @objc func autocomplete( ) {
+                let autocompleteController = GMSAutocompleteViewController()
+                autocompleteController.delegate = self as? GMSAutocompleteViewControllerDelegate
+
+                // Specify the place data types to return.
+                let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
+                  UInt(GMSPlaceField.placeID.rawValue))!
+                autocompleteController.placeFields = fields
+
+                // Specify a filter.
+                let filter = GMSAutocompleteFilter()
+                filter.type = .address
+                autocompleteController.autocompleteFilter = filter
+
+                // Display the autocomplete view controller.
+                present(autocompleteController, animated: true, completion: nil)
+              }
+
+              // Add a button to the view.
+//              func makeButton() {
+//                let btnLaunchAc = UIButton(frame: CGRect(x: 5, y: 150, width: 300, height: 35))
+//                btnLaunchAc.backgroundColor = .green
+//                btnLaunchAc.setTitle("Search for Place", for: .normal)
+//                btnLaunchAc.addTarget(self, action: #selector(autocompleteClicked), for: .touchUpInside)
+//                self.view.addSubview(btnLaunchAc)
+//              }
+
+
+            
+
+
+    
+    
     func googlePlacesVersion(){
         // G maps
         let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
@@ -83,6 +121,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     @IBAction func getButton(_ sender: Any) {
         print("yessir")
+        autocomplete()
         sendGetReq(place_id: "ChIJHWeDu_FlwokRRvHnCSXZL_w") { (jsonRes, error) in
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "There are \(jsonRes) people here", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -121,14 +160,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         do {
                             let json = try JSONSerialization.jsonObject(with: data, options:[]) as! NSDictionary
                             let results = json["results"] as! [NSDictionary]
-                            var place_ids : [String] = []
+                            var place_ids_names = [[String]]()
                             for place in results {
-                                print(place["name"] ?? "", place["place_id"] ?? "")
+//                                print(place["name"] ?? "", place["place_id"] ?? "")
                                 let place_id  =  String(describing: place["place_id"] ?? "" )
-                                place_ids.append(place_id)
+                                let place_name  =  String(describing: place["name"] ?? "" )
+                                
+                                place_ids_names.append([place_id, place_name])
                             }
-                            self.sendPost(place_id: place_ids)
-                            print("Place IDs  \(place_ids)")
+                            self.sendPost(place_id: place_ids_names)
+                            print("Place IDs  \(place_ids_names)")
                             print("Success data")
                         } catch {
                             print(error)
@@ -207,3 +248,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
 }
 
+extension ViewController: GMSAutocompleteViewControllerDelegate {
+
+  // Handle the user's selection.
+  func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+    print("Place name: \(place.name)")
+    print("Place ID: \(place.placeID)")
+    print("Place attributions: \(place.attributions)")
+    dismiss(animated: true, completion: nil)
+  }
+
+  func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    // TODO: handle the error.
+    print("Error: ", error.localizedDescription)
+  }
+
+  // User canceled the operation.
+  func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+    dismiss(animated: true, completion: nil)
+  }
+  // Turn the network activity indicator on and off again.
+  func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+  }
+
+  func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+  }
+
+}

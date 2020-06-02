@@ -7,34 +7,41 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--0 People-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CrowdIt" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DnB-K6-VhR">
+                                <rect key="frame" x="0.0" y="103" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="0 People" id="bcM-Vu-S8f">
-                        <barButtonItem key="leftBarButtonItem" style="done" id="xxM-oJ-yJe">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Zux-JT-B3E">
+                    <navigationItem key="navigationItem" id="bcM-Vu-S8f">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="reu-l2-6vA">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kr6-QH-hS6">
                                 <rect key="frame" x="20" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Post"/>
                                 <connections>
-                                    <action selector="postButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="44k-aB-jAE"/>
+                                    <action selector="postButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bay-aC-Ak5"/>
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" id="2bg-eV-L4m">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7xS-dC-9Rg">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="ZXP-N9-3t0">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aCl-ub-coh">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Get"/>
+                                <state key="normal" title="Search"/>
                                 <connections>
-                                    <action selector="getButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oFz-L8-Ugd"/>
+                                    <action selector="getButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aEh-DD-JyB"/>
                                 </connections>
                             </button>
                         </barButtonItem>
