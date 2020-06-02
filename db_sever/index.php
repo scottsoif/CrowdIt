@@ -83,7 +83,7 @@ else if ($_GET['userid'] == "")
     $get_placeid = $_GET['placeid'];
     $result = $conn->query("select count(*) from person 
                       where placeid=\"$get_placeid\" and 
-                      time >= CURRENT_TIMESTAMP - interval 215 minute");
+                      time >= CURRENT_TIMESTAMP - interval 1500 minute");
 
     $rows = array();
     while ($r = mysqli_fetch_assoc($result))
