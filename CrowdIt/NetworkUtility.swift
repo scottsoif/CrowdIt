@@ -49,9 +49,18 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     func placesAPITest( ) {
         var currentLoc: CLLocation!
-        currentLoc = locationManager.location
-        let lat = currentLoc.coordinate.latitude
-        let lon = currentLoc.coordinate.longitude
+        var lat = 0.0
+        var lon = 0.0
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways) {
+                   currentLoc = locationManager.location
+                    lat = currentLoc.coordinate.latitude
+                    lon = currentLoc.coordinate.longitude
+                  
+               }
+//        var currentLoc: CLLocation!
+//        currentLoc = locationManager.location
+//        let lat = currentLoc.coordinate.latitude
+//        let lon = currentLoc.coordinate.longitude
         
         
         guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(lon)&radius=35&key=\(API_Key)") else { return }

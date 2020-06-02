@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:loc_gpx.gpx">
-   </FileRef>
-   <FileRef
       location = "group:CrowdIt.xcodeproj">
    </FileRef>
    <FileRef

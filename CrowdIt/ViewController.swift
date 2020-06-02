@@ -50,14 +50,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         GMSServices.provideAPIKey("AIzaSyDBEGvuILbEIx4MLupTueP8gcfXFYm0EIo")
         //
-        
         var currentLoc: CLLocation!
-        currentLoc = locationManager.location
-        let lat = currentLoc.coordinate.latitude
-        let lon = currentLoc.coordinate.longitude
-        let currLocation = CLLocationCoordinate2DMake(lat, lon)
-        
-        let camera = GMSCameraPosition.camera(withTarget: currLocation, zoom: 12)
+        var camera: GMSCameraPosition
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways) {
+            currentLoc = locationManager.location
+            let lat = currentLoc.coordinate.latitude
+            let lon = currentLoc.coordinate.longitude
+            let currLocation = CLLocationCoordinate2DMake(lat, lon)
+            currentLoc = locationManager.location
+             camera = GMSCameraPosition.camera(withTarget: currLocation, zoom: 12)
+        }
+        else{
+             camera = GMSCameraPosition.camera(withLatitude: 40.807552, longitude: -73.962724, zoom: 12)
+        }
         mapView = GMSMapView.map(withFrame: CGRect.zero,camera: camera)
         mapView.delegate = self
         mapView.isMyLocationEnabled = true
