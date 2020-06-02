@@ -65,6 +65,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         view = mapView
         
     }
+    
+    // when you tap on store on map
     func mapView(_ mapView: GMSMapView, didTapPOIWithPlaceID placeID: String,
                  name: String, location: CLLocationCoordinate2D) {
         print("You tapped \(name): \(placeID), \(location.latitude)/\(location.longitude)")
@@ -73,13 +75,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         NetworkUtility.shared.sendGetReq(place_id: placeID) { (jsonRes, error) in
             DispatchQueue.main.async {
                 let placeDet = placeDetails(numPpl: jsonRes, placeName: name)
-                
-                self.infoMarker.snippet = "There are currently \(placeDet.numPpl) people in \(placeDet.placeName)"
-                self.infoMarker.position = location
-                self.infoMarker.title = "\(placeDet.numPpl) people here"
-                self.infoMarker.opacity = 0;
-                self.infoMarker.map = mapView
-                self.mapView.selectedMarker = self.infoMarker
+                self.setMarker(location: location, placeDet: placeDet)
+//                self.infoMarker.snippet = "There are currently \(placeDet.numPpl) people in \(placeDet.placeName)"
+//                self.infoMarker.position = location
+//                self.infoMarker.title = "\(placeDet.numPpl) people here"
+//                self.infoMarker.opacity = 0;
+//                self.infoMarker.map = mapView
+//                self.mapView.selectedMarker = self.infoMarker
                 
                 //                let alert = UIAlertController(title: "\(jsonRes) people here", message: "There are currently \(jsonRes) people in \(String(describing: place.name ?? "" ))", preferredStyle: UIAlertController.Style.alert)
                 //                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -89,15 +91,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             
 
         }
+//    Add a button to the view.
+//                       func makeButton() {
+//                         let btnLaunchAc = UIButton(frame: CGRect(x: 5, y: 150, width: 300, height: 35))
+//                         btnLaunchAc.backgroundColor = .green
+//                         btnLaunchAc.setTitle("Search for Place", for: .normal)
+//                         btnLaunchAc.addTarget(self, action: #selector(autocompleteClicked), for: .touchUpInside)
+//                         self.view.addSubview(btnLaunchAc)
+//                       }
         
-        func setMarker(location: CLLocationCoordinate2D, placeDet : placeDetails){
-            
-            mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: 18)
-            
+    // here ariana this is for you
+    // for search bar
+    func setMarker(location: CLLocationCoordinate2D, placeDet : placeDetails){
+
+            mapView.camera = GMSCameraPosition.camera(withTarget: location, zoom: 17)
+
             infoMarker.snippet = "There are currently \(placeDet.numPpl) people in \(placeDet.placeName)"
             infoMarker.position = location
             infoMarker.title = "\(placeDet.numPpl) people here"
-            
+
             infoMarker.opacity = 0;
             infoMarker.map = mapView
             mapView.selectedMarker = infoMarker
@@ -139,14 +151,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             present(autocompleteController, animated: true, completion: nil)
         }
         
-        // Add a button to the view.
-        //              func makeButton() {
-        //                let btnLaunchAc = UIButton(frame: CGRect(x: 5, y: 150, width: 300, height: 35))
-        //                btnLaunchAc.backgroundColor = .green
-        //                btnLaunchAc.setTitle("Search for Place", for: .normal)
-        //                btnLaunchAc.addTarget(self, action: #selector(autocompleteClicked), for: .touchUpInside)
-        //                self.view.addSubview(btnLaunchAc)
-        //              }
+      
         
         
         
