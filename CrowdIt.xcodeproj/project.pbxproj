@@ -17,6 +17,7 @@
 		F443C8EF247C43AB00AE0129 /* CrowdItTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443C8EE247C43AB00AE0129 /* CrowdItTests.swift */; };
 		F443C8FA247C43AB00AE0129 /* CrowdItUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F443C8F9247C43AB00AE0129 /* CrowdItUITests.swift */; };
 		F443C90C247C460200AE0129 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F443C90B247C460200AE0129 /* Podfile */; };
+		F468CDC92486B35D008575FE /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F468CDC82486B35D008575FE /* NetworkUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		F443C8F9247C43AB00AE0129 /* CrowdItUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrowdItUITests.swift; sourceTree = "<group>"; };
 		F443C8FB247C43AB00AE0129 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F443C90B247C460200AE0129 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F468CDC82486B35D008575FE /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				F443C8D7247C43A800AE0129 /* AppDelegate.swift */,
 				F443C8D9247C43A800AE0129 /* SceneDelegate.swift */,
 				F443C8DB247C43A800AE0129 /* ViewController.swift */,
+				F468CDC82486B35D008575FE /* NetworkUtility.swift */,
 				F443C8DD247C43A800AE0129 /* Main.storyboard */,
 				F443C8E0247C43AB00AE0129 /* Assets.xcassets */,
 				F443C8E2247C43AB00AE0129 /* LaunchScreen.storyboard */,
@@ -332,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F443C8DC247C43A800AE0129 /* ViewController.swift in Sources */,
+				F468CDC92486B35D008575FE /* NetworkUtility.swift in Sources */,
 				F443C8D8247C43A800AE0129 /* AppDelegate.swift in Sources */,
 				F443C8DA247C43A800AE0129 /* SceneDelegate.swift in Sources */,
 			);

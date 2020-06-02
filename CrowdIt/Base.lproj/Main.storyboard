@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--CrowdIt-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CrowdIt" customModuleProvider="target" sceneMemberID="viewController">
@@ -24,7 +24,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bcM-Vu-S8f">
+                    <navigationItem key="navigationItem" title="CrowdIt" id="bcM-Vu-S8f">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="reu-l2-6vA">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kr6-QH-hS6">
                                 <rect key="frame" x="20" y="7" width="92" height="30"/>
@@ -35,15 +35,10 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="ZXP-N9-3t0">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aCl-ub-coh">
-                                <rect key="frame" x="302" y="7" width="92" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Search"/>
-                                <connections>
-                                    <action selector="getButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aEh-DD-JyB"/>
-                                </connections>
-                            </button>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="ZXP-N9-3t0">
+                            <connections>
+                                <action selector="searchButton:" destination="BYZ-38-t0r" id="aQT-tQ-ks6"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
