@@ -47,11 +47,11 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     
     
-    func placesAPITest( ) {
+    @objc func placesAPI( ) {
         var currentLoc: CLLocation!
         var lat = 0.0
         var lon = 0.0
-        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways) {
+        if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways && locationManager.location != nil) {
                    currentLoc = locationManager.location
                     lat = currentLoc.coordinate.latitude
                     lon = currentLoc.coordinate.longitude
@@ -76,7 +76,7 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     if let response = response{
                         // gets status code
                         if let httpResponse = response as? HTTPURLResponse {
-                            print("statusCode: \(httpResponse.statusCode)")
+                            print("placesAPI statusCode: \(httpResponse.statusCode)")
                         }
                     }
                     if let data = data {
@@ -104,7 +104,7 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     
     func sendPost(place_id : Any){
-        let paramaters = ["userid":"13", "zipcode":"11559",  "placeid":place_id]
+        let paramaters = ["userid":"\(UIDevice.current.identifierForVendor?.uuidString ?? "0")", "zipcode":"00000",  "placeid":place_id]
                 guard let url = URL(string: "http://24.44.193.13:60/posts") else { return }
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
@@ -116,7 +116,7 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     if let response = response{
                         // gets status code
                         if let httpResponse = response as? HTTPURLResponse {
-                            print("statusCode: \(httpResponse.statusCode)")
+                            print("sendPost statusCode: \(httpResponse.statusCode)")
                         }
                     }
                 }.resume()    }
@@ -131,7 +131,7 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             if let response = response{
                 // gets status code
                 if let httpResponse = response as? HTTPURLResponse {
-                    print("statusCode: \(httpResponse.statusCode)")
+                    print("sendGetReq statusCode: \(httpResponse.statusCode)")
                 }
             }
             if let data = data {
