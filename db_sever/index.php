@@ -68,8 +68,7 @@ else if ($data['userid'] != "")
         // place[0]  = place id
         // place[1]  = place name
         $result1 = $conn->query("insert into person(userid, zipcode, time, placeid )
-                      values ($userid, $zipcode, CURRENT_TIMESTAMP, \"$place[0]\");");
-
+                      values (\"$userid\", $zipcode, CURRENT_TIMESTAMP, \"$place[0]\");");
         $result2 = $conn->query("insert ignore into places(placeid, placename)
                       values(\"$place[0]\", \"$place[1]\");");
         // $result->execute();
@@ -83,7 +82,7 @@ else if ($_GET['userid'] == "")
     $get_placeid = $_GET['placeid'];
     $result = $conn->query("select count(*) from person 
                       where placeid=\"$get_placeid\" and 
-                      time >= CURRENT_TIMESTAMP - interval 1500 minute");
+                      time >= CURRENT_TIMESTAMP - interval 15000 minute");
 
     $rows = array();
     while ($r = mysqli_fetch_assoc($result))
