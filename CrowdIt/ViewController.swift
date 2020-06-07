@@ -26,6 +26,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     let infoMarker = GMSMarker()
     var timer = Timer()
     
+    let userDefaults = UserDefaults.standard
+    
+    @IBOutlet weak var switch1: UISwitch!
+    
+    
     var mapView : GMSMapView!
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace){
@@ -44,14 +49,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         var lon = 0.0
         
         print("Dev id: \(UIDevice.current.identifierForVendor?.uuidString ?? "0")")
+        switch1.isOn = userDefaults.bool(forKey: "mySwitchValue")
+        
         placesClient = GMSPlacesClient.shared()
         
         GMSServices.provideAPIKey("AIzaSyDBEGvuILbEIx4MLupTueP8gcfXFYm0EIo")
         
-//        scheduledTimer()
+        scheduledTimer()
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
+        locationManager.allowsBackgroundLocationUpdates = true
         
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways && locationManager.location != nil) {
             currentLoc = locationManager.location
@@ -75,7 +83,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     // updates location in background
     
     func scheduledTimer(){
-        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(NetworkUtility.shared.placesAPI), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 4, target: NetworkUtility(), selector: #selector(NetworkUtility.shared.placesAPI), userInfo: nil, repeats: true)
+//        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] in
+//            NetworkUtility.shared.placesAPI()
+//        })
+
         print("timer executed")
     }
     
@@ -125,7 +137,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     @objc func autocomplete( ) {
         let autocompleteController = GMSAutocompleteViewController()
-        autocompleteController.delegate = self as? GMSAutocompleteViewControllerDelegate
+        autocompleteController.delegate = self as GMSAutocompleteViewControllerDelegate
         
         // dark mode check
         switch UITraitCollection.current.userInterfaceStyle  {
@@ -158,16 +170,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     
     
-    
-    
-    @IBAction func postButton(_ sender: UIButton) {
-        
-        // Encapsulated network calls as new object
-        NetworkUtility.shared.placesAPI()
-        //        NetworkUtility.shared.googlePlacesVersion()
-        
-        
+    @IBAction func togglePost(_ sender: Any) {
+        userDefaults.set((sender as AnyObject).isOn, forKey: "mySwitchValue")
+        if(switch1.isOn){
+            NetworkUtility.shared.placesAPI()
+        }
     }
+    
+    
+
     @IBAction func searchButton(_ sender: Any) {
         
         autocomplete()
@@ -185,7 +196,7 @@ extension ViewController: GMSAutocompleteViewControllerDelegate {
         //    print("Place name: \(place.name)")
         //    print("Place ID: \(place.placeID)")
         //    print("Place attributions: \(place.attributions)")
-        print(place.name ?? "", place.placeID ?? "", place.coordinate ?? "")
+        print(place.name ?? "", place.placeID ?? "", place.coordinate )
         
         dismiss(animated: true, completion: nil)
         NetworkUtility.shared.sendGetReq(place_id: String(describing: place.placeID ?? "" )) { (jsonRes, error) in
