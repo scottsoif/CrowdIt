@@ -1,6 +1,6 @@
 <?php
 $url1 = $_SERVER['REQUEST_URI'];
-header("Refresh: 2; URL=$url1");  // refresh table every 2 seconds
+header("Refresh: 200; URL=$url1");  // refresh table every 2 seconds
 
 // echo "Hello There World";
 $servername = $_ENV["servername_CI"];;
