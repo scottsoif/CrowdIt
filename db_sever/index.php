@@ -31,9 +31,9 @@ if ($_GET['table'] == "1")
         foreach ($row as $field => $value)
         { // I you want you can right this line like this: foreach($row as $value) {
             if ($counter % 2 == 0)
-                echo "<td bgcolor=\"pink\">" . $value . "</td bgcolor=\"yellow\">"; // I just did not use "htmlspecialchars()" function.
+                echo "<td bgcolor=\"pink\">" . $value . "</td bgcolor=\"yellow\">"; 
             else
-                echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; // I just did not use "htmlspecialchars()" function.
+                echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; 
            
         }
         $counter++;
@@ -53,9 +53,9 @@ if ($_GET['table'] == "1")
         foreach ($row as $field => $value)
         { // I you want you can right this line like this: foreach($row as $value) {
           if ($counter % 2 == 0)
-              echo "<td bgcolor=\"yellow\">" . $value . "</td bgcolor=\"yellow\">"; // I just did not use "htmlspecialchars()" function.
+              echo "<td bgcolor=\"yellow\">" . $value . "</td bgcolor=\"yellow\">"; 
           else
-              echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; // I just did not use "htmlspecialchars()" function.
+              echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; 
             
         }
         $counter++;
