@@ -22,17 +22,22 @@ if (!$conn)
 if ($_GET['table'] == "1")
 { // Prints Whole DB as Table
   
-  $result = $conn->query("select * from places");
+  $result = $conn->query("select * from places limit 5");
   echo "<br>";
   echo "<table border='1'>";
+  $counter = 0;
   while ($row = mysqli_fetch_assoc($result))
   { // Important line !!! Check summary get row on array ..
       echo "<tr>";
       foreach ($row as $field => $value)
       { // I you want you can right this line like this: foreach($row as $value) {
-          echo "<td>" . $value . "</td>"; // I just did not use "htmlspecialchars()" function.
+        if ($counter % 2 == 0)
+            echo "<td bgcolor=\"yellow\">" . $value . "</td bgcolor=\"yellow\">"; // I just did not use "htmlspecialchars()" function.
+        else
+            echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; // I just did not use "htmlspecialchars()" function.
           
       }
+      $counter++;
       echo "</tr>";
   }
   echo "</table>";
@@ -46,9 +51,13 @@ if ($_GET['table'] == "1")
         echo "<tr>";
         foreach ($row as $field => $value)
         { // I you want you can right this line like this: foreach($row as $value) {
-            echo "<td>" . $value . "</td>"; // I just did not use "htmlspecialchars()" function.
-            
+            if ($counter % 2 == 0)
+                echo "<td bgcolor=\"pink\">" . $value . "</td bgcolor=\"yellow\">"; // I just did not use "htmlspecialchars()" function.
+            else
+                echo "<td bgcolor=\"cyan\">" . $value . "</td bgcolor=\"cyan\">"; // I just did not use "htmlspecialchars()" function.
+           
         }
+        $counter++;
         echo "</tr>";
     }
     echo "</table>";

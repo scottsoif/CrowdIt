@@ -21,7 +21,7 @@ struct placeDetails {
 class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {  // TODO (GMSMapViewDelegate needed?
     
     var placesClient: GMSPlacesClient!
-    let locationManager = CLLocationManager()
+    var locationManager : CLLocationManager!
     let API_Key = ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
     let infoMarker = GMSMarker()
     var timer = Timer()
@@ -49,17 +49,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         var lon = 0.0
         
         print("Dev id: \(UIDevice.current.identifierForVendor?.uuidString ?? "0")")
-        switch1.isOn = userDefaults.bool(forKey: "mySwitchValue")
+        switch1.isOn = userDefaults.bool(forKey: "switchValue")
         
         placesClient = GMSPlacesClient.shared()
         
         GMSServices.provideAPIKey(ProcessInfo.processInfo.environment["DEBUGMODE"] ?? "")
         
-        scheduledTimer()
+//        scheduledTimer()   // sends post request with current location at interval
         
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
-        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 30
+        locationManager.startUpdatingLocation()
+//        locationManager.startMonitoringSignificantLocationChanges()
+        locationManager.allowsBackgroundLocationUpdates = userDefaults.bool(forKey: "switchValue") ? true : false
+        locationManager.pausesLocationUpdatesAutomatically = false
         
         if(CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .authorizedAlways && locationManager.location != nil) {
             currentLoc = locationManager.location
@@ -81,14 +88,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
     }
     // updates location in background
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            if let location = locations.last {
+                NetworkUtility.shared.placesAPI()
+            print("New location is \(location)")
+        }
+    }
     
-    func scheduledTimer(){
-        timer = Timer.scheduledTimer(timeInterval: 4, target: NetworkUtility(), selector: #selector(NetworkUtility.shared.placesAPI), userInfo: nil, repeats: true)
-//        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] in
-//            NetworkUtility.shared.placesAPI()
-//        })
-
-        print("timer executed")
+    func scheduledTimer(){  // sends post request with current location at 15 minute  interval
+        timer = Timer.scheduledTimer(timeInterval: 900, target: NetworkUtility(), selector: #selector(NetworkUtility.shared.placesAPI), userInfo: nil, repeats: true)
     }
     
     // when you tap on store on map
@@ -171,10 +179,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     
     @IBAction func togglePost(_ sender: Any) {
-        userDefaults.set((sender as AnyObject).isOn, forKey: "mySwitchValue")
+        userDefaults.set((sender as AnyObject).isOn, forKey: "switchValue")
         if(switch1.isOn){
             NetworkUtility.shared.placesAPI()
+            self.locationManager.allowsBackgroundLocationUpdates =  true
         }
+        if(!switch1.isOn) {
+            self.locationManager.allowsBackgroundLocationUpdates = false
+        }
+
     }
     
     
