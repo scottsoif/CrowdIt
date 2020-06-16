@@ -94,6 +94,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
             print("New location is \(location)")
         }
     }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if (status != CLAuthorizationStatus.authorizedAlways) {
+            switch1.isOn = false
+            userDefaults.set(false, forKey: "switchValue")
+        }
+        else {
+            switch1.isOn = true
+            userDefaults.set(true, forKey: "switchValue")
+        }
+    }
     
     func scheduledTimer(){  // sends post request with current location at 15 minute  interval
         timer = Timer.scheduledTimer(timeInterval: 900, target: NetworkUtility(), selector: #selector(NetworkUtility.shared.placesAPI), userInfo: nil, repeats: true)
@@ -181,6 +191,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     @IBAction func togglePost(_ sender: Any) {
         userDefaults.set((sender as AnyObject).isOn, forKey: "switchValue")
         if(switch1.isOn){
+            if (CLLocationManager.authorizationStatus() != .authorizedAlways) {
+                let alertController = UIAlertController(title: "Background Location Not Enabled", message: "Go to Settings to allow location in background", preferredStyle: .alert)
+                let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in })
+                     }
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                alertController.addAction(cancelAction)
+                alertController.addAction(settingsAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             NetworkUtility.shared.placesAPI()
             self.locationManager.allowsBackgroundLocationUpdates =  true
         }
