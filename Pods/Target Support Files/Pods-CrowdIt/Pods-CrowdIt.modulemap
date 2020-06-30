@@ -1,6 +1,0 @@
-module Pods_CrowdIt {
-  umbrella header "Pods-CrowdIt-umbrella.h"
-
-  export *
-  module * { export * }
-}
