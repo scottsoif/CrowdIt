@@ -22,7 +22,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     var placesClient: GMSPlacesClient!
     var locationManager : CLLocationManager!
-    let API_Key = ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
     let infoMarker = GMSMarker()
     var timer = Timer()
     
@@ -49,6 +48,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         var lon = 0.0
         
         print("Dev id: \(UIDevice.current.identifierForVendor?.uuidString ?? "0")")
+        
         switch1.isOn = userDefaults.bool(forKey: "switchValue")
         
         placesClient = GMSPlacesClient.shared()
@@ -61,7 +61,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+
         locationManager.distanceFilter = 30
         locationManager.startUpdatingLocation()
 //        locationManager.startMonitoringSignificantLocationChanges()
