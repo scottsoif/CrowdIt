@@ -15,7 +15,11 @@ $data = json_decode(file_get_contents('php://input') , true);
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
-
+// Insert bulk PLACES for testing
+// for ($i = 3; $i < 566; $i++){
+// $result1 = $conn->query("insert into person(userid, zipcode, time, placeid )
+// values (\"G7E50C1L-A37C-4C$i-A2Z0-C239YD21BA11\", 0, CURRENT_TIMESTAMP, \"ChIJ8f13aq5ZwokRHrZ2nx4TP3Y\");");
+// }
 
 // Check connection
 if (!$conn)
