@@ -52,21 +52,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         switch1.isOn = userDefaults.bool(forKey: "switchValue")
         
         placesClient = GMSPlacesClient.shared()
-        
+        // ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
         GMSServices.provideAPIKey(ProcessInfo.processInfo.environment["DEBUGMODE"] ?? "")
         
-//        scheduledTimer()   // sends post request with current location at interval
+        //        scheduledTimer()   // sends post request with current location at interval
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-
+        
         locationManager.distanceFilter = 30
         locationManager.startUpdatingLocation()
-//        locationManager.startMonitoringSignificantLocationChanges()
+        //        locationManager.startMonitoringSignificantLocationChanges()
         locationManager.allowsBackgroundLocationUpdates = userDefaults.bool(forKey: "switchValue") ? true : false
         locationManager.pausesLocationUpdatesAutomatically = false
         
@@ -91,8 +91,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     }
     // updates location in background
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            if let location = locations.last {
-                NetworkUtility.shared.placesAPI()
+        if let location = locations.last {
+            NetworkUtility.shared.placesAPI()
             print("New location is \(location)")
         }
     }
@@ -178,7 +178,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) |
             UInt(GMSPlaceField.placeID.rawValue) | UInt(GMSPlaceField.coordinate.rawValue) )!
         autocompleteController.placeFields = fields
-
+        
         let filter = GMSAutocompleteFilter()
         //                filter.type = .address
         filter.type = .establishment
@@ -201,7 +201,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                     }
                     if UIApplication.shared.canOpenURL(settingsUrl) {
                         UIApplication.shared.open(settingsUrl, completionHandler: { (success) in })
-                     }
+                    }
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                 alertController.addAction(cancelAction)
@@ -209,16 +209,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
                 self.present(alertController, animated: true, completion: nil)
             }
             NetworkUtility.shared.placesAPI()
+            let alert = UIAlertController(title: "Thanks for sharing your location in background", message: "You are helping other CrowdIt know how busy stores are", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
             self.locationManager.allowsBackgroundLocationUpdates =  true
         }
         if(!switch1.isOn) {
             self.locationManager.allowsBackgroundLocationUpdates = false
         }
-
+        
     }
     
     
-
+    
     @IBAction func searchButton(_ sender: Any) {
         
         autocomplete()
