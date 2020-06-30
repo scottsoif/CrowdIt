@@ -1,16 +1,21 @@
 <?php
+//  To run server, enter following command in terminal
+//      php -S 0.0.0.0:60
+
 $url1 = $_SERVER['REQUEST_URI'];
 header("Refresh: 200; URL=$url1");  // refresh table every 200 seconds
 
-$servername = $_ENV["servername_CI"];;
+$servername = $_ENV["servername_CI"];
 $username = $_ENV["username_CI"];
-$password = $_ENV["dbPassword_CI"];;
+$password = $_ENV["dbPassword_CI"];
 $dbname = "crowdIt";
 
 $data = json_decode(file_get_contents('php://input') , true);
 
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+
 
 // Check connection
 if (!$conn)
@@ -25,9 +30,9 @@ if ($_GET['table'] == "1")
   $result = $conn->query("select userid, placeid, time from person order by time desc");
     echo "<br>";
     echo "<table border='1' style=\"float: left;\">";
-    while ($row = mysqli_fetch_assoc($result))
+    while ($row = mysqli_fetch_assoc($result)){
         echo "<tr>";
-        foreach ($row as $field => $value)
+        foreach ($row as $field => $value){
             if ($counter % 2 == 0)
                 echo "<td bgcolor=\"pink\">" . $value . "</td bgcolor=\"yellow\">"; 
             else
@@ -93,9 +98,17 @@ else if ($_GET['userid'] == "")
         $rows[] = $r;
     }
     print json_encode($rows);
+    logger("Num People", "debug.log", json_encode($rows));
 
 }
 
 $conn->close();
+
+function logger($logMsg="logger", $filename="logger", $logData=""){     
+    date_default_timezone_set('est');
+    $log  = date("D M j Y H:i:s")." | $logMsg : ".print_r($logData,1).PHP_EOL .                  
+    "-------------------------".PHP_EOL;
+    file_put_contents($filename, $log, FILE_APPEND);                      
+}
 
 ?>
