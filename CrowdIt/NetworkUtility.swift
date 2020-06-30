@@ -19,7 +19,7 @@ class NetworkUtility: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     
     var placesClient: GMSPlacesClient!
     let locationManager = CLLocationManager()
-    let API_Key = "AIzaSyDBEGvuILbEIx4MLupTueP8gcfXFYm0EIo"
+    let API_Key = ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
 
     
     func googlePlacesVersion(){
