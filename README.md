@@ -8,7 +8,7 @@ CrowdIt is an IOS app written in swift. CrowdIt works using a crowdsourcing sche
 
 <table >
  <tr>
-    <td width="282px" hspace="30">Tap on any business market to get current occupancy</td>
+    <td width="282px" hspace="30">Tap on any business marker to get current occupancy</td>
     <td width="282px" hspace="30">Search your favorite store to see how crowded it is</td>
    <td width="282px">Toggle the switch to allow CrowdIt to track you location anonymously in the background</td>
  </tr>
