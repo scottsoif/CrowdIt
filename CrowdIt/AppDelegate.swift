@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        GMSPlacesClient.provideAPIKey(ProcessInfo.processInfo.environment["DEBUGMODE"] ?? "")
+        GMSPlacesClient.provideAPIKey(API_KEY.key)
         return true
     }
     

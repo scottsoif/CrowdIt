@@ -16,6 +16,10 @@ struct placeDetails {
     var numPpl: String
     var placeName : String
 }
+struct API_KEY {
+    static let key: String = ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
+//    static let key: String = "ABCD"
+}
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {  // TODO (GMSMapViewDelegate needed?
@@ -38,7 +42,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {}
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,7 +56,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDel
         
         placesClient = GMSPlacesClient.shared()
         // ProcessInfo.processInfo.environment["DEBUGMODE"] ?? ""
-        GMSServices.provideAPIKey(ProcessInfo.processInfo.environment["DEBUGMODE"] ?? "")
+        GMSServices.provideAPIKey(API_KEY.key)
         
         //        scheduledTimer()   // sends post request with current location at interval
         
